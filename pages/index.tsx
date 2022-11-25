@@ -61,7 +61,7 @@ const HomeStyle = styled.div`
     border: 1px dashed blue;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: space-between;
     margin-top: 20px;
 
     > div {
@@ -69,6 +69,10 @@ const HomeStyle = styled.div`
       margin: 10px 10px;
       width: 180px;
       height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
     }
   }
 
