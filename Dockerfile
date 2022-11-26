@@ -8,9 +8,9 @@ RUN npm install
 
 RUN npm install --global pm2
 
-RUN npm run build
-
 COPY ./ ./
+
+RUN npm run build
 
 EXPOSE 3000
 
