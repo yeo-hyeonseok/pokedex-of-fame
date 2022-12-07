@@ -10,11 +10,23 @@ interface Pokemon {
 }
 
 const Home = () => {
-  const [allPokemon, setAllPokemon] = useState([])
+  const [allPokemon, setAllPokemon] = useState<any>([])
+
+  const getOnePokemon = (pokemon: string) => {
+    axios.get(pokemon).then((response) => {
+      if (response) {
+        setAllPokemon((prevPokemons: any) => [...prevPokemons, response.data])
+      } else {
+        console.log('뭔가 이상함')
+      }
+    })
+  }
 
   const getAllPokemon = () => {
-    axios.get('https://pokeapi.co/api/v2/pokemon?limit=151').then((res) => {
-      if (res) setAllPokemon(res.data.results)
+    axios.get('https://pokeapi.co/api/v2/pokemon?limit=151').then((allPokemon) => {
+      allPokemon.data.results.forEach((pokemon: any) => {
+        getOnePokemon(pokemon.url)
+      })
     })
   }
 
@@ -22,13 +34,22 @@ const Home = () => {
     getAllPokemon()
   }, [])
 
+  useEffect(() => {
+    console.log(allPokemon)
+  }, [allPokemon])
+
   return (
     <HomeStyle>
       <div className="image-container">
         <Image src={MainImage} alt="푸키먼" placeholder="blur" width={350} />
       </div>
       <div className="main-container">
-        {allPokemon && allPokemon.map((item: Pokemon, index) => <div key={index}>{item.name}</div>)}
+        {allPokemon &&
+          allPokemon.map((item: any, index: number) => (
+            <div key={index}>
+              <Image width={100} height={100} alt={item.name} src={item.sprites.front_default} />
+            </div>
+          ))}
       </div>
       <div className="side-menu">
         <div className="side-menu-content">ball 1</div>
