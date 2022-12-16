@@ -1,31 +1,66 @@
 import styled from 'styled-components'
 import Image from 'next/image'
-import MainImage from 'public/assets/image/pokemon.png'
+import LogoImage from 'public/assets/image/pof_logo.png'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 
-interface Pokemon {
-  name: string
-  url: string
+const addZero = (number: string) => {
+  if (number.length == 2) {
+    return '0' + number
+  } else if (number.length == 1) {
+    return '00' + number
+  } else {
+    return number
+  }
+}
+
+const NavBar = (props: any) => {
+  const { id } = props
+
+  return (
+    <NavBarStyle id={id}>
+      <div className="logo-container">
+        <Image src={LogoImage} alt="푸키먼" placeholder="blur" width={350} className="logo-image" />
+        <span className="version-info">v1.0.0</span>
+      </div>
+    </NavBarStyle>
+  )
+}
+
+const PokemonCard = (props: any) => {
+  const { id, types, src, number, name } = props
+
+  return (
+    <PokemonCardStyle id={id}>
+      <div className="pokemon-type">
+        {types.map((item: any, index: number) => {
+          return (
+            <span key={index} className="pokemon-type-item">
+              {item.type.name}
+            </span>
+          )
+        })}
+      </div>
+      <div className="pokemon-info">
+        <Image width={150} height={150} alt={name} src={src} className="pokemon-image" />
+        <div className="pokemon-nametag">
+          <span className="pokemon-number">{addZero(String(number))}</span>
+          <p className="pokemon-name">{name}</p>
+        </div>
+      </div>
+    </PokemonCardStyle>
+  )
 }
 
 const Home = () => {
   const [allPokemon, setAllPokemon] = useState<any>([])
 
-  const getOnePokemon = (pokemon: string) => {
-    axios.get(pokemon).then((response) => {
-      if (response) {
-        setAllPokemon((prevPokemons: any) => [...prevPokemons, response.data])
-      } else {
-        console.log('뭔가 이상함')
-      }
-    })
-  }
-
   const getAllPokemon = () => {
     axios.get('https://pokeapi.co/api/v2/pokemon?limit=151').then((allPokemon) => {
       allPokemon.data.results.forEach((pokemon: any) => {
-        getOnePokemon(pokemon.url)
+        axios.get(pokemon.url).then((response) => {
+          setAllPokemon((prevPokemons: any) => [...prevPokemons, response.data])
+        })
       })
     })
   }
@@ -34,30 +69,22 @@ const Home = () => {
     getAllPokemon()
   }, [])
 
-  useEffect(() => {
-    console.log(allPokemon)
-  }, [allPokemon])
-
   return (
     <HomeStyle>
-      <div className="image-container">
-        <Image src={MainImage} alt="푸키먼" placeholder="blur" width={350} />
-      </div>
+      <NavBar id="main-gnb" />
       <div className="main-container">
         {allPokemon &&
           allPokemon.map((item: any, index: number) => (
             <div key={index}>
-              <Image width={100} height={100} alt={item.name} src={item.sprites.front_default} />
+              <PokemonCard
+                id="pokemon-card"
+                types={item.types}
+                src={item.sprites.front_default}
+                name={item.name}
+                number={item.id}
+              />
             </div>
           ))}
-      </div>
-      <div className="side-menu">
-        <div className="side-menu-content">ball 1</div>
-        <div className="side-menu-content">ball 2</div>
-        <div className="side-menu-content">ball 3</div>
-        <div className="side-menu-content">ball 4</div>
-        <div className="side-menu-content">ball 5</div>
-        <div className="side-menu-content">ball 6</div>
       </div>
     </HomeStyle>
   )
@@ -65,29 +92,41 @@ const Home = () => {
 
 export default Home
 
-const HomeStyle = styled.div`
-  border: 1px dashed red;
-  position: relative;
+const NavBarStyle = styled.div`
+  display: flex;
+  align-items: center;
+  height: 100px;
+  box-shadow: 1px 5px 12px -5px rgba(110, 110, 110, 0.5);
+  -webkit-box-shadow: 1px 5px 12px -5px rgba(110, 110, 110, 0.5);
+  -moz-box-shadow: 1px 5px 12px -5px rgba(110, 110, 110, 0.5);
 
-  .image-container {
-    width: 100%;
-    border: 1px dashed blue;
-    text-align: center;
-    margin-top: 40px;
+  .logo-container {
+    margin-left: 4rem;
+    display: flex;
+
+    .logo-image {
+    }
+
+    .version-info {
+      display: flex;
+      flex-direction: column-reverse;
+      padding-bottom: 1rem;
+      font-size: 16px;
+    }
   }
+`
 
+const HomeStyle = styled.div`
   .main-container {
     padding: 10px 15vw;
     width: 100%;
-    border: 1px dashed blue;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     margin-top: 20px;
 
     > div {
-      border: 1px dashed green;
-      margin: 10px 10px;
+      margin: 20px 10px;
       width: 180px;
       height: 220px;
       display: flex;
@@ -96,24 +135,43 @@ const HomeStyle = styled.div`
       font-weight: bold;
     }
   }
+`
 
-  .side-menu {
-    position: fixed;
-    right: 10px;
-    top: 20%;
-    border: 1px dashed blue;
-    width: 200px;
-    height: 300px;
-    display: flex;
-    flex-wrap: wrap;
+const PokemonCardStyle = styled.div`
+  .pokemon-type {
+    .pokemon-type-item {
+      background-color: lightgray;
+      border-radius: 4px;
+      padding: 3px 5px;
 
-    .side-menu-content {
-      border: 1px dashed green;
-      border-radius: 50%;
-      width: 50%;
+      &:first-child {
+        margin-right: 3px;
+      }
+    }
+  }
+
+  .pokemon-info {
+    .pokemon-image {
+    }
+
+    .pokemon-nametag {
       display: flex;
-      align-items: center;
-      justify-content: center;
+      border-radius: 12px;
+      border: 2px solid black;
+      box-sizing: border-box;
+
+      .pokemon-number {
+        background-color: black;
+        color: white;
+        border-radius: 10px 0 0 10px;
+        padding: 4px 6px;
+      }
+
+      .pokemon-name {
+        padding: 4px 6px;
+        width: 100%;
+        text-align: center;
+      }
     }
   }
 `
