@@ -1,4 +1,8 @@
-export const POKEMON_TYPE_COLORS = {
+interface POKEMON_TYPE_COLORS_TYPES {
+  [key: string]: string
+}
+
+export const POKEMON_TYPE_COLORS: POKEMON_TYPE_COLORS_TYPES = {
   normal: '#A8A878',
   fire: '#F08030',
   water: '#6890F0',
