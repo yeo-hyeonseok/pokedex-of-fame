@@ -1,4 +1,5 @@
 import '../styles/globals.css'
+import '../public/assets/fonts/style.css'
 import type { AppProps } from 'next/app'
 import GlobalNavBar from 'src/components/molecules/GlobalNavBar'
 

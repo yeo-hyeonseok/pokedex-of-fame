@@ -21,21 +21,23 @@ export default NameTag
 
 const NameTagStyle = styled.div`
   display: flex;
-  border-radius: 18px;
+  border-radius: 10px;
   border: 2px solid black;
-  box-sizing: border-box;
 
   .pokemon-number {
     background-color: black;
     color: white;
-    border-radius: 12px 0 0 12px;
+    border-radius: 8px 0 0 8px;
     padding: 4px 6px;
+    font-family: 'DungGeunMo';
   }
 
   .pokemon-name {
     padding: 4px 6px;
     width: 100%;
     text-align: center;
+    font-size: 18px;
     font-weight: bold;
+    font-family: 'DungGeunMo';
   }
 `

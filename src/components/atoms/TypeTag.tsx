@@ -24,6 +24,7 @@ const TypeTagStyle = styled.span`
   padding: 4px 7px;
   font-size: 14px;
   font-weight: bold;
+  font-family: 'DungGeunMo';
 
   ${(props) =>
     props.color &&

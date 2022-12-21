@@ -27,5 +27,7 @@ const LogoStyle = styled.div`
 
   .version-info {
     font-size: 16px;
+    font-family: 'DungGeunMo';
+    margin-top: 5px;
   }
 `
