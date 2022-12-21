@@ -1,0 +1,14 @@
+@font-face {
+  font-family: 'DungGeunMo';
+  src: url('DungGeunMo.ttf') format('ttf'), url('DungGeunMo.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'DungGeunMo2';
+  src: url('DungGeunMo2.ttf') format('ttf'), url('DungGeunMo2.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'DungGeunMo3';
+  src: url('DungGeunMo3.ttf') format('ttf'), url('DungGeunMo3.ttf') format('truetype');
+}
